@@ -1,6 +1,36 @@
 import time
 import os
 
+def is_yes(choice):
+    return choice in ('Y', 'y')
+def is_no(choice):
+    return choice in ('N', 'n')
+
+def make_file(filename):
+    print("Đang tạo file " + filename + "...")
+    file = open(filename, "w", encoding="utf8")
+    file.close()
+    time.sleep(1.5)
+    print("Đã tạo!\n")
+
+    time.sleep(0.5)
+    path = os.getcwd()
+    print("File được tạo nằm theo đường dẫn:\n" + path + "\\" + filename)
+    time.sleep(0.5)
+    print("----------------\n")
+
+    return 0
+
+def get_data():
+    status = input("\nBạn nhập dữ liệu chưa (Y/N): ")
+    if is_yes(status):
+        return True
+    elif is_no(status):
+        print("Mời bạn nhập dữ liệu vào file!")
+    else:
+        print("Không hợp lệ!")
+    return False
+
 def run(words_dict):
     print("Danh sách hành động có thể lựa chọn:"
           "\n\t1. Thống kê top N từ được lặp lại nhiều nhất"
@@ -13,8 +43,9 @@ def run(words_dict):
     valid = False
     while (valid != True):
         action = input("Chọn hành động bạn muốn thực hiện: ")
-        if action in [str(i) for i in range(0, 6)]:
+        if action.isdigit() and int(action) in range(1,6):
             valid = True
+
     if action == "5":
         return action
     elif action == "1":
@@ -54,49 +85,23 @@ def run(words_dict):
         print("Tính năng đang được xây dựng. Vui lòng trở lại sau.")
     return action
 
-def make_file():
-    print("Đang tạo file input.txt...")
-    file = open("input.txt", "w", encoding="utf8")
-    file.close()
-    time.sleep(1.5)
-    print("Đã tạo!\n")
-
-    time.sleep(0.5)
-    path = os.getcwd()
-    print("File được tạo nằm theo đường dẫn:\n" +
-          path + "\input.txt")
-    time.sleep(0.5)
-    print("----------------\n")
-
-    time.sleep(0.5)
-    print("Nhập văn bản cần đếm số từ vào file input.txt và lưu lại (Ctrl + S)")
-
-    return 0
-
-def get_input():
-    status = input("\nBạn nhập dữ liệu chưa (Y/N): ")
-    if status in ('Y', 'y'):
-        return True
-    elif status in ('N', 'n'):
-        print("Mời bạn nhập dữ liệu vào file!")
-    else:
-        print("Không hợp lệ!")
-    return False
-
-
 
 if not os.path.exists("input.txt"):
-    make_file()
+    make_file("input.txt")
+    time.sleep(0.5)
+    print("Nhập văn bản cần đếm số từ vào file input.txt và lưu lại (Ctrl + S)")
 else:
     print("Đã tồn tại file input.txt")
     flag = True
     while(flag):
         time.sleep(0.5)
-        isMade = input("\nBạn có muốn tạo mới không (Y/N): ")
-        if isMade in ('Y', 'y'):
-            make_file()
+        want_new = input("\nBạn có muốn tạo mới không (Y/N): ")
+        if is_yes(want_new):
+            make_file("input.txt")
+            time.sleep(0.5)
+            print("Nhập văn bản cần đếm số từ vào file input.txt và lưu lại (Ctrl + S)")
             flag = False
-        elif isMade in ('N', 'n'):
+        elif is_no(want_new):
             flag = False
         else:
             print("Không hợp lệ!")
@@ -104,8 +109,7 @@ else:
 status = False
 while (status != True):
     time.sleep(0.5)
-    status = get_input()
-
+    status = get_data()
 print("Đang đọc từ file dữ liệu...")
 file = open("input.txt", "r", encoding="utf8")
 doc = file.read()
@@ -138,7 +142,6 @@ print("----------------\n")
 running = True
 while (running):
     action = run(words_dict)
-    # print(type(action))
 
     if (action != "5"):
         flag = False
@@ -147,11 +150,11 @@ while (running):
         flag = True
     while (flag != True):
         time.sleep(0.5)
-        choose = input("\nBạn có muốn tiếp tục không (Y/N): ")
-        if choose in ('Y', 'y'):
+        choice = input("\nBạn có muốn tiếp tục không (Y/N): ")
+        if is_yes(choice):
             running = True
             flag = True
-        elif choose in ('N', 'n'):
+        elif is_no(choice):
             running = False
             flag = True
         else:
