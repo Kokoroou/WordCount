@@ -21,15 +21,49 @@ def make_file(filename):
 
     return 0
 
-def get_data():
-    status = input("\nBạn nhập dữ liệu chưa (Y/N): ")
-    if is_yes(status):
-        return True
-    elif is_no(status):
-        print("Mời bạn nhập dữ liệu vào file!")
-    else:
-        print("Không hợp lệ!")
-    return False
+def get_data(filename):
+    imported = False
+    while (imported != True):
+        time.sleep(0.5)
+
+        status = input("\nBạn nhập dữ liệu chưa (Y/N): ")
+        if is_yes(status):
+            imported = True
+        elif is_no(status):
+            print("Mời bạn nhập dữ liệu vào file!")
+        else:
+            print("Không hợp lệ!")
+
+    print("Đang đọc từ file dữ liệu...")
+
+    return open(filename, "r", encoding="utf8").read()
+
+def tokenize(text):
+    # Xóa kí tự đặc biệt và khoảng trắng
+    for symbol in "()[]{},.;:?!\"“”'":
+        text = text.replace(symbol, "")
+    for space in ["\n", "\t", "\v", "\f", "\r", "  "]:
+        text = text.replace(space, " ")
+    text = text.lower()
+
+    # Tách từ
+    word_list = text.split(" ")
+    return word_list
+def word_count(word_list, sort=None):
+    words_dict = {}
+
+    #Count words
+    for word in word_list:
+        if word != "":
+            words_dict[word] = word_list.count(word)
+
+    #Sorted words_dict
+    if sort.lower() == "ascending":
+        words_dict = dict(sorted(words_dict.items(), key=lambda item: item[1], reverse=False))
+    elif sort.lower() == "descending":
+        words_dict = dict(sorted(words_dict.items(), key=lambda item: item[1], reverse=True))
+
+    return words_dict
 
 def run(words_dict):
     print("Danh sách hành động có thể lựa chọn:"
@@ -85,7 +119,6 @@ def run(words_dict):
         print("Tính năng đang được xây dựng. Vui lòng trở lại sau.")
     return action
 
-
 if not os.path.exists("input.txt"):
     make_file("input.txt")
     time.sleep(0.5)
@@ -106,33 +139,14 @@ else:
         else:
             print("Không hợp lệ!")
 
-status = False
-while (status != True):
-    time.sleep(0.5)
-    status = get_data()
-print("Đang đọc từ file dữ liệu...")
-file = open("input.txt", "r", encoding="utf8")
-doc = file.read()
+doc = get_data("input.txt")
 time.sleep(1)
 print("Đã đọc!\n")
 
 time.sleep(0.5)
 print("Đang xử lý...")
-words_dict = {}
 
-# Xóa kí tự đặc biệt và khoảng trắng
-for symbol in "()[]{},.;:!\"“”":
-    doc = doc.replace(symbol, "")
-for space in ["\n", "\t", "\v", "\f", "\r", "  "]:
-    doc = doc.replace(space, " ")
-doc = doc.lower()
-
-# Tách từ, đếm số lượng và sắp xếp
-words = doc.split(" ")
-for w in words:
-    if w != "":
-        words_dict[w] = words.count(w)
-words_dict = dict(sorted(words_dict.items(), key=lambda item: item[1], reverse=True))
+words_dict = word_count(tokenize(doc), "descending")
 
 time.sleep(1)
 print("Đã xử lý!")
