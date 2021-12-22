@@ -20,8 +20,12 @@ This project is made to count the frequency of words in a document.
 - Add exceptional words
 
 ## How to use
+### For normal user:
+1. Download file **WordCount.exe** in folder [dist](https://github.com/Kokoroou/word-count/tree/main/dist) and run
+### For developer:
 1. Clone this repository into your computer
-2. Run file main.py
+2. Edit file **main.py**
+3. Compile it into **WordCount.exe** by script `pyinstaller WordCount.spec` (in case you have installed package PyInstaller)
 
 ## Credit
 - [Trương Tuấn Anh](https://github.com/Kokoroou)
