@@ -5,6 +5,7 @@
 <p align="center">
   <a href="#introduction">Introduction</a> •
   <a href="#key-features">Key features</a> •
+  <a href="#requirement">Requirement</a> •
   <a href="#how-to-use">How to use</a> •
   <a href="#credit">Credit</a> •
   <a href="#license">License</a>
@@ -18,6 +19,10 @@ This project is made to count the frequency of words in a document.
 - Create a word frequency histogram
 - Find a set of sentences that include repeated terms
 - Add exceptional words
+
+## Requirement
+- Window 10 or above
+- Python 3.9 interpreter (optional)
 
 ## How to use
 ### For normal user:
